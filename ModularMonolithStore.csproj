@@ -20,15 +20,17 @@
     <Folder Include="Modules\Orders\Services\" />
     <Folder Include="Modules\Orders\Repositories\" />
     <Folder Include="Modules\Orders\DTOs\" />
-    <Folder Include="Modules\Orders\Data\" />
-    <Folder Include="Modules\Orders\Models\" />
     <Folder Include="Modules\Products\DTOs\" />
     <Folder Include="Modules\Products\Migrations\" />
     <Folder Include="Modules\Products\Repositories\" />
+    <Folder Include="Modules\Customers\Data\" />
+    <Folder Include="Modules\Customers\DTOs\" />
+    <Folder Include="Modules\Customers\Migrations\" />
+    <Folder Include="Modules\Customers\Repositories\" />
+    <Folder Include="Modules\Customers\Services\" />
     <Folder Include="Modules\Users\Data\" />
     <Folder Include="Modules\Users\DTOs\" />
     <Folder Include="Modules\Users\Migrations\" />
-    <Folder Include="Modules\Users\Models\" />
     <Folder Include="Modules\Users\Repositories\" />
     <Folder Include="Modules\Users\Services\" />
   </ItemGroup>
