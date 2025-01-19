@@ -19,7 +19,7 @@ namespace ModularMonolithStore.Modules.Products.Models
         [Range(0.01, 5000)]
         public decimal Price { get; set; }
         
-        public ProductDiscount? DiscountedPrice { get; set; }
+        public ProductDiscount? Discount { get; set; }
 
         [Range(0, 100)]
         public int AvailableStock { get; set; }
@@ -32,7 +32,7 @@ namespace ModularMonolithStore.Modules.Products.Models
         
         public ProductImage Image { get; set; }
         
-        public List<ProductReview> Reviews { get; set; }
+        public ICollection<ProductReview> Reviews { get; set; }
         
         public ProductTag? Tag { get; set; }
     }

@@ -22,7 +22,6 @@
     <Folder Include="Modules\Orders\DTOs\" />
     <Folder Include="Modules\Products\DTOs\" />
     <Folder Include="Modules\Products\Migrations\" />
-    <Folder Include="Modules\Products\Repositories\" />
     <Folder Include="Modules\Customers\Data\" />
     <Folder Include="Modules\Customers\DTOs\" />
     <Folder Include="Modules\Customers\Migrations\" />

@@ -8,5 +8,6 @@
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string DiscountCode { get; set; }
+        public ICollection<Product> Products { get; set; }
     }
 }

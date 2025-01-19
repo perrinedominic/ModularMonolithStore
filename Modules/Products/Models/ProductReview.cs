@@ -12,8 +12,6 @@
         public int CustomerId { get; set; }
         // Text of the review
         public string Review { get; set; }
-        // Rating out of 5 stars
-        public int Rating { get; set; }
         // Date of the review
         public DateTime CreatedAt { get; set; }
     }
