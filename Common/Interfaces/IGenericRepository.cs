@@ -1,10 +1,10 @@
-﻿namespace ModularMonolithStore.Modules.Products.Repositories.Interfaces
+﻿namespace ModularMonolithStore.Common.Interfaces
 {
     /// <summary>
     /// Generic repository interface for CRUD implementation across all Models
     /// </summary>
     /// <typeparam name="T">Type of the Model that implements the Interface</typeparam>
-    public interface IRepository<T> where T : class
+    public interface IGenericRepository<T> where T : class
     {
         Task<T?> GetByIdAsync(int id);
         Task<IEnumerable<T>> GetAllAsync();

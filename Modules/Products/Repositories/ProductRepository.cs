@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ModularMonolithStore.Common.Interfaces;
 using ModularMonolithStore.Modules.Products.Models;
 using ModularMonolithStore.Modules.Products.Repositories.Interfaces;
 
@@ -7,7 +8,7 @@ namespace ModularMonolithStore.Modules.Products.Repositories
     /// <summary>
     /// 
     /// </summary>
-    public class ProductRepository : IRepository<Product>, IProductRepository
+    public class ProductRepository : IGenericRepository<Product>, IProductRepository
     {
         private readonly DbContext _context;
         private readonly DbSet<Product> _dbSet;
@@ -36,30 +37,13 @@ namespace ModularMonolithStore.Modules.Products.Repositories
         /// </exception>
         public async Task AddAsync(Product product)
         {
-            var existingProduct = await _dbSet
-            .Where(p => p.Name == product.Name && p.Brand == product.Brand)
-            .FirstOrDefaultAsync();
-
-            if (existingProduct != null)
-            {
-                throw new InvalidOperationException("The product name already exists for this brand. Please use a unique name.");
-            }
-
             await _dbSet.AddAsync(product);
             await _context.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(Product product)
         {
-            if (product == null)
-            {
-                throw new ArgumentNullException(nameof(product), "Image cannot be null.");
-            }
-
-            var currentProduct = await GetByIdAsync(product.Id)
-                ?? throw new ArgumentNullException(nameof(product), "No matching Image was found.");
-
-            _context.Entry(currentProduct).CurrentValues.SetValues(product);
+            _dbSet.Update(product);
             await _context.SaveChangesAsync();
         }
 
@@ -69,7 +53,8 @@ namespace ModularMonolithStore.Modules.Products.Repositories
 
             if (product != null)
             {
-            _dbSet.Remove(product);
+                _dbSet.Remove(product);
+                await _context.SaveChangesAsync();
             }
         }
 

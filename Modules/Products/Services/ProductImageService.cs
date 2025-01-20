@@ -2,15 +2,15 @@
 using ModularMonolithStore.Common.Interfaces;
 using ModularMonolithStore.Modules.Products.Models;
 
-namespace ModularMonolithStore.Modules.Products.Repositories
+namespace ModularMonolithStore.Modules.Products.Services
 {
 
-    public class ProductImageRepository : IGenericRepository<ProductImage>
+    public class ProductImageService : IGenericService<ProductImage>
     {
         private readonly DbContext _context;
         private readonly DbSet<ProductImage> _dbSet;
 
-        public ProductImageRepository(DbContext context)
+        public ProductImageService(DbContext context)
         {
             _context = context;
             _dbSet = context.Set<ProductImage>();
@@ -26,15 +26,23 @@ namespace ModularMonolithStore.Modules.Products.Repositories
             return await _dbSet.ToListAsync();
         }
 
-        public async Task AddAsync(ProductImage productImage)
+        public async Task AddAsync(ProductImage ProductImage)
         {
-            await _dbSet.AddAsync(productImage);
+            await _dbSet.AddAsync(ProductImage);
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(ProductImage productImage)
+        public async Task UpdateAsync(ProductImage ProductImage)
         {
-            _dbSet.Update(productImage);
+            if (ProductImage == null)
+            {
+                throw new ArgumentNullException(nameof(ProductImage), "Discount cannot be null.");
+            }
+
+            var currentProductBrand = await GetByIdAsync(ProductImage.Id)
+                ?? throw new ArgumentNullException(nameof(ProductImage), "No matching Discount was found.");
+
+            _context.Entry(currentProductBrand).CurrentValues.SetValues(ProductImage);
             await _context.SaveChangesAsync();
         }
 
@@ -44,8 +52,7 @@ namespace ModularMonolithStore.Modules.Products.Repositories
 
             if (ProductImage != null)
             {
-                _dbSet.Remove(ProductImage);
-                await _context.SaveChangesAsync();
+            _dbSet.Remove(ProductImage);
             }
         }
     }

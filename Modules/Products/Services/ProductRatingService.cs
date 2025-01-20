@@ -2,15 +2,15 @@
 using ModularMonolithStore.Common.Interfaces;
 using ModularMonolithStore.Modules.Products.Models;
 
-namespace ModularMonolithStore.Modules.Products.Repositories
+namespace ModularMonolithStore.Modules.Products.Services
 {
 
-    public class ProductRatingRepository : IGenericRepository<ProductRating>
+    public class ProductRatingService : IGenericService<ProductRating>
     {
         private readonly DbContext _context;
         private readonly DbSet<ProductRating> _dbSet;
 
-        public ProductRatingRepository(DbContext context)
+        public ProductRatingService(DbContext context)
         {
             _context = context;
             _dbSet = context.Set<ProductRating>();
@@ -28,13 +28,26 @@ namespace ModularMonolithStore.Modules.Products.Repositories
 
         public async Task AddAsync(ProductRating productRating)
         {
+            bool exists = await _dbSet.AnyAsync(p => p.ProductId == productRating.ProductId && p.CustomerId == productRating.CustomerId);
+
+            if (exists)
+                throw new InvalidOperationException("The customer has already left a rating on this product.");
+
             await _dbSet.AddAsync(productRating);
             await _context.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(ProductRating productRating)
         {
-            _dbSet.Update(productRating);
+            if (productRating == null)
+            {
+                throw new ArgumentNullException(nameof(productRating), "Rating cannot be null.");
+            }
+
+            var currentProductBrand = await GetByIdAsync(productRating.Id)
+                ?? throw new ArgumentNullException(nameof(productRating), "No matching Rating was found.");
+
+            _context.Entry(currentProductBrand).CurrentValues.SetValues(productRating);
             await _context.SaveChangesAsync();
         }
 
@@ -44,8 +57,7 @@ namespace ModularMonolithStore.Modules.Products.Repositories
 
             if (productRating != null)
             {
-                _dbSet.Remove(productRating);
-                await _context.SaveChangesAsync();
+            _dbSet.Remove(productRating);
             }
         }
     }

@@ -2,17 +2,17 @@
 using ModularMonolithStore.Common.Interfaces;
 using ModularMonolithStore.Modules.Products.Models;
 
-namespace ModularMonolithStore.Modules.Products.Repositories
+namespace ModularMonolithStore.Modules.Products.Services
 {
     /// <summary>
     /// 
     /// </summary>
-    public class ProductCategoryRepository : IGenericRepository<ProductCategory>
+    public class ProductCategoryService : IGenericService<ProductCategory>
     {
         private readonly DbContext _context;
         private readonly DbSet<ProductCategory> _dbSet;
 
-        public ProductCategoryRepository(DbContext context)
+        public ProductCategoryService(DbContext context)
         {
             _context = context;
             _dbSet = context.Set<ProductCategory>();
@@ -30,13 +30,26 @@ namespace ModularMonolithStore.Modules.Products.Repositories
 
         public async Task AddAsync(ProductCategory productCategory)
         {
+            bool exists = await _dbSet.AnyAsync(p => p.Name == productCategory.Name);
+
+            if (exists)
+                throw new InvalidOperationException("A category with the same name already exists.");
+
             await _dbSet.AddAsync(productCategory);
             await _context.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(ProductCategory productCategory)
         {
-            _dbSet.Update(productCategory);
+            if (productCategory == null)
+            {
+                throw new ArgumentNullException(nameof(productCategory), "Brand cannot be null.");
+            }
+
+            var currentProductCategory = await GetByIdAsync(productCategory.Id)
+                ?? throw new ArgumentNullException(nameof(productCategory), "No matching Brand was found.");
+
+            _context.Entry(currentProductCategory).CurrentValues.SetValues(productCategory);
             await _context.SaveChangesAsync();
         }
 
@@ -46,8 +59,7 @@ namespace ModularMonolithStore.Modules.Products.Repositories
 
             if (productCategory != null)
             {
-                _dbSet.Remove(productCategory);
-                await _context.SaveChangesAsync();
+            _dbSet.Remove(productCategory);
             }
         }
     }

@@ -2,15 +2,15 @@
 using ModularMonolithStore.Common.Interfaces;
 using ModularMonolithStore.Modules.Products.Models;
 
-namespace ModularMonolithStore.Modules.Products.Repositories
+namespace ModularMonolithStore.Modules.Products.Services
 {
 
-    public class ProductDiscountRepository : IGenericRepository<ProductDiscount>
+    public class ProductDiscountService : IGenericService<ProductDiscount>
     {
         private readonly DbContext _context;
         private readonly DbSet<ProductDiscount> _dbSet;
 
-        public ProductDiscountRepository(DbContext context)
+        public ProductDiscountService(DbContext context)
         {
             _context = context;
             _dbSet = context.Set<ProductDiscount>();
@@ -28,13 +28,26 @@ namespace ModularMonolithStore.Modules.Products.Repositories
 
         public async Task AddAsync(ProductDiscount productDiscount)
         {
+            bool exists = await _dbSet.AnyAsync(p => p.DiscountCode == productDiscount.DiscountCode);
+
+            if (exists)
+                throw new InvalidOperationException("The discount code already exists.");
+
             await _dbSet.AddAsync(productDiscount);
             await _context.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(ProductDiscount productDiscount)
         {
-            _dbSet.Update(productDiscount);
+            if (productDiscount == null)
+            {
+                throw new ArgumentNullException(nameof(productDiscount), "Discount cannot be null.");
+            }
+
+            var currentProductBrand = await GetByIdAsync(productDiscount.Id)
+                ?? throw new ArgumentNullException(nameof(productDiscount), "No matching Discount was found.");
+
+            _context.Entry(currentProductBrand).CurrentValues.SetValues(productDiscount);
             await _context.SaveChangesAsync();
         }
 
@@ -44,8 +57,7 @@ namespace ModularMonolithStore.Modules.Products.Repositories
 
             if (productDiscount != null)
             {
-                _dbSet.Remove(productDiscount);
-                await _context.SaveChangesAsync();
+            _dbSet.Remove(productDiscount);
             }
         }
     }
