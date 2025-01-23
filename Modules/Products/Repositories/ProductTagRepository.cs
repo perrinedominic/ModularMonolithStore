@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ModularMonolithStore.Common.Interfaces;
+using ModularMonolithStore.Modules.Products.Data;
 using ModularMonolithStore.Modules.Products.Models;
 
 namespace ModularMonolithStore.Modules.Products.Repositories
@@ -7,10 +8,10 @@ namespace ModularMonolithStore.Modules.Products.Repositories
 
     public class ProductTagRepository : IGenericRepository<ProductTag>
     {
-        private readonly DbContext _context;
+        private readonly ProductDbContext _context;
         private readonly DbSet<ProductTag> _dbSet;
 
-        public ProductTagRepository(DbContext context)
+        public ProductTagRepository(ProductDbContext context)
         {
             _context = context;
             _dbSet = context.Set<ProductTag>();

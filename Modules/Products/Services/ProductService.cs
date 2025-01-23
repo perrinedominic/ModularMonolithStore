@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ModularMonolithStore.Common.Interfaces;
+using ModularMonolithStore.Modules.Products.Data;
 using ModularMonolithStore.Modules.Products.Models;
 using ModularMonolithStore.Modules.Products.Repositories.Interfaces;
 using ModularMonolithStore.Modules.Products.Services.Interfaces;
@@ -11,23 +12,22 @@ namespace ModularMonolithStore.Modules.Products.Services
     /// </summary>
     public class ProductService : IGenericService<Product>, IProductService
     {
-        private readonly DbContext _context;
+        private readonly IProductRepository _productRepository;
         private readonly DbSet<Product> _dbSet;
 
-        public ProductService(DbContext context)
+        public ProductService(IProductRepository productRepository)
         {
-            _context = context;
-            _dbSet = context.Set<Product>();
+            _productRepository = productRepository;
         }
 
         public async Task<Product?> GetByIdAsync(int id)
         {
-            return await _dbSet.FindAsync(id);
+            return await _productRepository.GetByIdAsync(id);
         }
 
         public async Task<IEnumerable<Product>> GetAllAsync()
         {
-            return await _dbSet.ToListAsync();
+            return await _productRepository.GetAllAsync();
         }
 
         /// <summary>
@@ -47,8 +47,7 @@ namespace ModularMonolithStore.Modules.Products.Services
                 throw new InvalidOperationException("The product name already exists for this brand. Please use a unique name.");
             }
 
-            await _dbSet.AddAsync(product);
-            await _context.SaveChangesAsync();
+            await _productRepository.AddAsync(product);
         }
 
         public async Task UpdateAsync(Product product)
@@ -61,17 +60,16 @@ namespace ModularMonolithStore.Modules.Products.Services
             var currentProduct = await GetByIdAsync(product.Id)
                 ?? throw new ArgumentNullException(nameof(product), "No matching Image was found.");
 
-            _context.Entry(currentProduct).CurrentValues.SetValues(product);
-            await _context.SaveChangesAsync();
+            await _productRepository.UpdateAsync(product);
         }
 
         public async Task DeleteAsync(int id)
         {
-            var product = await GetByIdAsync(id);
+            var product = await _productRepository.GetByIdAsync(id);
 
             if (product != null)
             {
-            _dbSet.Remove(product);
+                await _productRepository.DeleteAsync(product.Id);
             }
         }
 

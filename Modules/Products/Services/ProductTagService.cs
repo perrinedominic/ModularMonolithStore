@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ModularMonolithStore.Common.Interfaces;
+using ModularMonolithStore.Modules.Products.Data;
 using ModularMonolithStore.Modules.Products.Models;
 
 namespace ModularMonolithStore.Modules.Products.Services
@@ -7,10 +8,10 @@ namespace ModularMonolithStore.Modules.Products.Services
 
     public class ProductTagService : IGenericService<ProductTag>
     {
-        private readonly DbContext _context;
+        private readonly ProductDbContext _context;
         private readonly DbSet<ProductTag> _dbSet;
 
-        public ProductTagService(DbContext context)
+        public ProductTagService(ProductDbContext context)
         {
             _context = context;
             _dbSet = context.Set<ProductTag>();

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ModularMonolithStore.Common.Interfaces;
+using ModularMonolithStore.Modules.Products.Data;
 using ModularMonolithStore.Modules.Products.Models;
 
 namespace ModularMonolithStore.Modules.Products.Services
@@ -7,10 +8,10 @@ namespace ModularMonolithStore.Modules.Products.Services
 
     public class ProductReviewService : IGenericService<ProductReview>
     {
-        private readonly DbContext _context;
+        private readonly ProductDbContext _context;
         private readonly DbSet<ProductReview> _dbSet;
 
-        public ProductReviewService(DbContext context)
+        public ProductReviewService(ProductDbContext context)
         {
             _context = context;
             _dbSet = context.Set<ProductReview>();

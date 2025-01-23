@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ModularMonolithStore.Modules.Products.DTOs;
+using ModularMonolithStore.Modules.Products.Models;
 using ModularMonolithStore.Modules.Products.Services;
+using ModularMonolithStore.Modules.Products.Services.Interfaces;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -9,38 +12,57 @@ namespace ModularMonolithStore.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly ProductService _productService;
+        private readonly IProductService _productService;
 
-        public ProductController(ProductService productService)
+        public ProductController(IProductService productService)
         {
             _productService = productService;
         }
 
         // GET: api/<ProductController>
         [HttpGet]
-        public async IEnumerable<string> Get()
+        public async Task<ActionResult<Product>> GetAllAsync()
         {
             var products = await _productService.GetAllAsync();
-            return new string[] { "value1", "value2" };
+            return Ok(products);
         }
 
         // GET api/<ProductController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<ActionResult<Product>> Get(int id)
         {
-            return "value";
+            var product = await _productService.GetByIdAsync(id);
+            return Ok(product);
         }
 
         // POST api/<ProductController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task Post([FromBody] ProductDto productDto)
         {
+            var product = new Product
+            {
+                Name = productDto.Name,
+                Brand = productDto.Brand,
+                Price = productDto.Price,
+                CreatedAt = DateTime.Now,
+                LastModifiedAt = DateTime.Now,
+            };
+
+            await _productService.AddAsync(product);
         }
 
         // PUT api/<ProductController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async void Put(ProductDto productDto)
         {
+            var product = new Product
+            {
+                Name = productDto.Name,
+                Brand = productDto.Brand,
+                Price = productDto.Price
+            };
+
+            await _productService.UpdateAsync(product);
         }
 
         // DELETE api/<ProductController>/5

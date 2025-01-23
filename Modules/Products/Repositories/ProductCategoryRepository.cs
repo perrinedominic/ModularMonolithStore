@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ModularMonolithStore.Common.Interfaces;
+using ModularMonolithStore.Modules.Products.Data;
 using ModularMonolithStore.Modules.Products.Models;
 
 namespace ModularMonolithStore.Modules.Products.Repositories
@@ -9,10 +10,10 @@ namespace ModularMonolithStore.Modules.Products.Repositories
     /// </summary>
     public class ProductCategoryRepository : IGenericRepository<ProductCategory>
     {
-        private readonly DbContext _context;
+        private readonly ProductDbContext _context;
         private readonly DbSet<ProductCategory> _dbSet;
 
-        public ProductCategoryRepository(DbContext context)
+        public ProductCategoryRepository(ProductDbContext context)
         {
             _context = context;
             _dbSet = context.Set<ProductCategory>();

@@ -1,11 +1,12 @@
-﻿using ModularMonolithStore.Modules.Products.Models;
+﻿using ModularMonolithStore.Common.Interfaces;
+using ModularMonolithStore.Modules.Products.Models;
 
 namespace ModularMonolithStore.Modules.Products.Repositories.Interfaces
 {
     /// <summary>
     /// Repository interface with methods specific to the Product Model
     /// </summary>
-    public interface IProductRepository
+    public interface IProductRepository : IGenericRepository<Product>
     {
         Task<IEnumerable<Product>> GetByBrandAsync(int brandId);
         Task<IEnumerable<Product>> GetByCategoryAsync(int categoryId);

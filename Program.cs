@@ -1,5 +1,7 @@
 
+using Microsoft.EntityFrameworkCore;
 using ModularMonolithStore.Common.Interfaces;
+using ModularMonolithStore.Modules.Products.Data;
 using ModularMonolithStore.Modules.Products.Repositories;
 using ModularMonolithStore.Modules.Products.Repositories.Interfaces;
 using ModularMonolithStore.Modules.Products.Services;
@@ -16,6 +18,11 @@ namespace ModularMonolithStore
             // Register services
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
+            builder.Services.AddDbContext<ProductDbContext>(options =>
+            {
+                options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
