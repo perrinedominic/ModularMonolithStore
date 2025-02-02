@@ -1,5 +1,7 @@
 # Description
 
+Clean Architecture with Repository Pattern
+
 ## Installation
 
 ## Usage
@@ -23,7 +25,7 @@ Authentication: Amazon Cognito (User Management), JWT (Authorization), AWS IAM(I
 
 ## Security Considerations
 
-**AWS Credintials**: Do not hard-code AWS credentials in the code. Use environment variables or the AWS SDK's default credential provider chain for secure credential management.
+**AWS Credentials**: Do not hard-code AWS credentials in the code. Use environment variables or the AWS SDK's default credential provider chain for secure credential management.
 
 **Token Expiry**: Cognito's JWT tokens have an expiration time. Make sure you handle token refresh securely, especially for long-running sessions.
 
