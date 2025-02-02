@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ModularMonolithStore.Common.Interfaces;
-using ModularMonolithStore.Modules.Products.Data;
+using ModularMonolithStore.Common;
 using ModularMonolithStore.Modules.Products.Models;
 using ModularMonolithStore.Modules.Products.Repositories.Interfaces;
 using ModularMonolithStore.Modules.Products.Services.Interfaces;
@@ -12,10 +11,9 @@ namespace ModularMonolithStore.Modules.Products.Services
     /// </summary>
     public class ProductService : IGenericService<Product>, IProductService
     {
-        private readonly IProductRepository _productRepository;
-        private readonly DbSet<Product> _dbSet;
+        private readonly IGenericRepository<Product> _productRepository;
 
-        public ProductService(IProductRepository productRepository)
+        public ProductService(IGenericRepository<Product> productRepository)
         {
             _productRepository = productRepository;
         }
@@ -38,9 +36,10 @@ namespace ModularMonolithStore.Modules.Products.Services
         /// </exception>
         public async Task AddAsync(Product product)
         {
-            var existingProduct = await _dbSet
-            .Where(p => p.Name == product.Name && p.Brand == product.Brand)
-            .FirstOrDefaultAsync();
+            var existingProducts = await this.GetAllAsync();
+            var existingProduct = existingProducts
+                .Where(p => p.Name == product.Name && p.Brand == product.Brand)
+                .FirstOrDefault();
 
             if (existingProduct != null)
             {
@@ -69,28 +68,36 @@ namespace ModularMonolithStore.Modules.Products.Services
 
             if (product != null)
             {
-                await _productRepository.DeleteAsync(product.Id);
+                await _productRepository.DeleteAsync(product);
             }
         }
 
         public async Task<IEnumerable<Product>> GetByBrandAsync(int brandId)
         {
-            return await _dbSet.Where(p => p.Brand.Id == brandId).ToListAsync();
+            var existingProducts = await _productRepository.GetAllAsync();
+
+            return existingProducts.Where(p => p.Brand.Id == brandId);
         }
 
         public async Task<IEnumerable<Product>> GetByCategoryAsync(int categoryId)
         {
-            return await _dbSet.Where(p => p.Category.Id == categoryId).ToListAsync();
+            var existingProducts = await _productRepository.GetAllAsync();
+
+            return existingProducts.Where(p => p.Category.Id == categoryId);
         }
 
         public async Task<IEnumerable<Product>> GetByTagAsync(int tagId)
         {
-            return await _dbSet.Where(p => p.Tag.Id == tagId).ToListAsync();
+            var existingProducts = await _productRepository.GetAllAsync();
+
+            return existingProducts.Where(p => p.Tag.Id == tagId);
         }
 
         public async Task<IEnumerable<Product>> GetByDiscountAsync(int discountId)
         {
-            return await _dbSet.Where(p => p.Discount.Id == discountId).ToListAsync();
+            var existingProducts = await _productRepository.GetAllAsync();
+
+            return existingProducts.Where(p => p.Discount.Id == discountId);
         }
     }
 }

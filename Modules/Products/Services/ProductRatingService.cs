@@ -1,41 +1,42 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ModularMonolithStore.Common.Interfaces;
+using ModularMonolithStore.Common;
 using ModularMonolithStore.Modules.Products.Data;
 using ModularMonolithStore.Modules.Products.Models;
+using ModularMonolithStore.Modules.Products.Services.Interfaces;
 
 namespace ModularMonolithStore.Modules.Products.Services
 {
 
     public class ProductRatingService : IGenericService<ProductRating>
     {
-        private readonly ProductDbContext _context;
-        private readonly DbSet<ProductRating> _dbSet;
 
-        public ProductRatingService(ProductDbContext context)
+        private readonly IGenericRepository<ProductRating> _productRatingRepository;
+
+        public ProductRatingService(IGenericRepository<ProductRating> productRatingRepository)
         {
-            _context = context;
-            _dbSet = context.Set<ProductRating>();
+            _productRatingRepository = productRatingRepository;
         }
 
         public async Task<ProductRating?> GetByIdAsync(int id)
         {
-            return await _dbSet.FindAsync(id);
+            return await _productRatingRepository.GetByIdAsync(id);
         }
 
         public async Task<IEnumerable<ProductRating>> GetAllAsync()
         {
-            return await _dbSet.ToListAsync();
+            return await _productRatingRepository.GetAllAsync();
         }
 
         public async Task AddAsync(ProductRating productRating)
         {
-            bool exists = await _dbSet.AnyAsync(p => p.ProductId == productRating.ProductId && p.CustomerId == productRating.CustomerId);
+            var productRatings = await GetAllAsync();
+            bool exists = productRatings.Any(p => p.ProductId == productRating.ProductId && p.CustomerId == productRating.CustomerId);
 
             if (exists)
                 throw new InvalidOperationException("The customer has already left a rating on this product.");
 
-            await _dbSet.AddAsync(productRating);
-            await _context.SaveChangesAsync();
+            await _productRatingRepository.AddAsync(productRating);
+            await _productRatingRepository.SaveAsync();
         }
 
         public async Task UpdateAsync(ProductRating productRating)
@@ -48,8 +49,8 @@ namespace ModularMonolithStore.Modules.Products.Services
             var currentProductBrand = await GetByIdAsync(productRating.Id)
                 ?? throw new ArgumentNullException(nameof(productRating), "No matching Rating was found.");
 
-            _context.Entry(currentProductBrand).CurrentValues.SetValues(productRating);
-            await _context.SaveChangesAsync();
+            _productRatingRepository.UpdateAsync(productRating);
+            await _productRatingRepository.SaveAsync();
         }
 
         public async Task DeleteAsync(int id)
@@ -58,7 +59,7 @@ namespace ModularMonolithStore.Modules.Products.Services
 
             if (productRating != null)
             {
-            _dbSet.Remove(productRating);
+               await _productRatingRepository.DeleteAsync(productRating);
             }
         }
     }

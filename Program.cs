@@ -1,7 +1,8 @@
 
 using Microsoft.EntityFrameworkCore;
-using ModularMonolithStore.Common.Interfaces;
+using ModularMonolithStore.Common;
 using ModularMonolithStore.Modules.Products.Data;
+using ModularMonolithStore.Modules.Products.Models;
 using ModularMonolithStore.Modules.Products.Repositories;
 using ModularMonolithStore.Modules.Products.Repositories.Interfaces;
 using ModularMonolithStore.Modules.Products.Services;
@@ -15,7 +16,21 @@ namespace ModularMonolithStore
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Register services
+            builder.Services.Scan(scan => scan
+                .FromAssemblyOf<IGenericRepository<object>>() // This will scan the assembly containing IGenericRepository
+                .AddClasses(classes => classes.AssignableTo(typeof(IGenericRepository<>))) // Find all classes that implement IGenericRepository<T>
+                .AsImplementedInterfaces() // Register them as their implemented interfaces (e.g., IGenericRepository<T>)
+                .WithScopedLifetime() // Use scoped lifetime for repositories
+            );
+
+            // Automatically register all services that implement their respective interfaces
+            builder.Services.Scan(scan => scan
+                .FromAssemblyOf<IGenericService<object>>()  // This will scan the assembly containing your service interfaces
+                .AddClasses(classes => classes.AssignableTo(typeof(IGenericService<>))) // Find all classes that implement IProductService
+                .AsImplementedInterfaces()  // Register them as their implemented interfaces
+                .WithScopedLifetime()  // Use scoped lifetime for services
+            );
+
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
 

@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ModularMonolithStore.Common.Interfaces;
+using ModularMonolithStore.Common;
 using ModularMonolithStore.Modules.Products.Data;
 using ModularMonolithStore.Modules.Products.Models;
+using ModularMonolithStore.Modules.Products.Services.Interfaces;
 
 namespace ModularMonolithStore.Modules.Products.Services
 {
@@ -10,34 +11,33 @@ namespace ModularMonolithStore.Modules.Products.Services
     /// </summary>
     public class ProductCategoryService : IGenericService<ProductCategory>
     {
-        private readonly ProductDbContext _context;
-        private readonly DbSet<ProductCategory> _dbSet;
+        private readonly IGenericRepository<ProductCategory> _productCategoryRepository;
 
-        public ProductCategoryService(ProductDbContext context)
+        public ProductCategoryService(IGenericRepository<ProductCategory> productCategoryRepository)
         {
-            _context = context;
-            _dbSet = context.Set<ProductCategory>();
+            _productCategoryRepository = productCategoryRepository;
         }
 
         public async Task<ProductCategory?> GetByIdAsync(int id)
         {
-            return await _dbSet.FindAsync(id);
+            return await _productCategoryRepository.GetByIdAsync(id);
         }
 
         public async Task<IEnumerable<ProductCategory>> GetAllAsync()
         {
-            return await _dbSet.ToListAsync();
+            return await _productCategoryRepository.GetAllAsync();
         }
 
         public async Task AddAsync(ProductCategory productCategory)
         {
-            bool exists = await _dbSet.AnyAsync(p => p.Name == productCategory.Name);
+            var productCategories = await _productCategoryRepository.GetAllAsync();
+            bool exists = productCategories.Any(p => p.Name == productCategory.Name);
 
             if (exists)
                 throw new InvalidOperationException("A category with the same name already exists.");
 
-            await _dbSet.AddAsync(productCategory);
-            await _context.SaveChangesAsync();
+            await _productCategoryRepository.AddAsync(productCategory);
+            await _productCategoryRepository.SaveAsync();
         }
 
         public async Task UpdateAsync(ProductCategory productCategory)
@@ -50,8 +50,8 @@ namespace ModularMonolithStore.Modules.Products.Services
             var currentProductCategory = await GetByIdAsync(productCategory.Id)
                 ?? throw new ArgumentNullException(nameof(productCategory), "No matching Brand was found.");
 
-            _context.Entry(currentProductCategory).CurrentValues.SetValues(productCategory);
-            await _context.SaveChangesAsync();
+            await _productCategoryRepository.UpdateAsync(productCategory);
+            await _productCategoryRepository.SaveAsync();
         }
 
         public async Task DeleteAsync(int id)
@@ -60,7 +60,7 @@ namespace ModularMonolithStore.Modules.Products.Services
 
             if (productCategory != null)
             {
-            _dbSet.Remove(productCategory);
+                await _productCategoryRepository.DeleteAsync(productCategory);
             }
         }
     }

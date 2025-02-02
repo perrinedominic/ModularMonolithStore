@@ -1,15 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ModularMonolithStore.Common.Interfaces;
+using ModularMonolithStore.Common;
 using ModularMonolithStore.Modules.Products.Data;
 using ModularMonolithStore.Modules.Products.Models;
 using ModularMonolithStore.Modules.Products.Repositories.Interfaces;
+using System.Linq.Expressions;
 
 namespace ModularMonolithStore.Modules.Products.Repositories
 {
     /// <summary>
     /// 
     /// </summary>
-    public class ProductRepository : IGenericRepository<Product>, IProductRepository
+    public class ProductRepository : IProductRepository, IGenericRepository<Product>
     {
         private readonly ProductDbContext _context;
         private readonly DbSet<Product> _dbSet;
@@ -48,10 +49,8 @@ namespace ModularMonolithStore.Modules.Products.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(Product product)
         {
-            var product = await GetByIdAsync(id);
-
             if (product != null)
             {
                 _dbSet.Remove(product);
@@ -77,6 +76,17 @@ namespace ModularMonolithStore.Modules.Products.Repositories
         public async Task<IEnumerable<Product>> GetByDiscountAsync(int discountId)
         {
             return await _dbSet.Where(p => p.Discount.Id == discountId).ToListAsync();
+        }
+
+
+        public Task<IQueryable<Product>> GetByExAsync(Expression<Func<Product, bool>> predicate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<int> SaveAsync()
+        {
+            return await _context.SaveChangesAsync();
         }
     }
 }

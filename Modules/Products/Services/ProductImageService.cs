@@ -1,36 +1,36 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ModularMonolithStore.Common.Interfaces;
+using ModularMonolithStore.Common;
 using ModularMonolithStore.Modules.Products.Data;
 using ModularMonolithStore.Modules.Products.Models;
+using ModularMonolithStore.Modules.Products.Services.Interfaces;
 
 namespace ModularMonolithStore.Modules.Products.Services
 {
 
     public class ProductImageService : IGenericService<ProductImage>
     {
-        private readonly ProductDbContext _context;
-        private readonly DbSet<ProductImage> _dbSet;
+        private readonly IGenericRepository<ProductImage> _productImageRepository;
 
-        public ProductImageService(ProductDbContext context)
+
+        public ProductImageService(IGenericRepository<ProductImage> productImageRepository)
         {
-            _context = context;
-            _dbSet = context.Set<ProductImage>();
+            _productImageRepository = productImageRepository;
         }
 
         public async Task<ProductImage?> GetByIdAsync(int id)
         {
-            return await _dbSet.FindAsync(id);
+            return await _productImageRepository.GetByIdAsync(id);
         }
 
         public async Task<IEnumerable<ProductImage>> GetAllAsync()
         {
-            return await _dbSet.ToListAsync();
+            return await _productImageRepository.GetAllAsync();
         }
 
         public async Task AddAsync(ProductImage ProductImage)
         {
-            await _dbSet.AddAsync(ProductImage);
-            await _context.SaveChangesAsync();
+            await _productImageRepository.AddAsync(ProductImage);
+            await _productImageRepository.SaveAsync();
         }
 
         public async Task UpdateAsync(ProductImage ProductImage)
@@ -43,8 +43,8 @@ namespace ModularMonolithStore.Modules.Products.Services
             var currentProductBrand = await GetByIdAsync(ProductImage.Id)
                 ?? throw new ArgumentNullException(nameof(ProductImage), "No matching Discount was found.");
 
-            _context.Entry(currentProductBrand).CurrentValues.SetValues(ProductImage);
-            await _context.SaveChangesAsync();
+            await _productImageRepository.UpdateAsync(ProductImage);
+            await _productImageRepository.SaveAsync();
         }
 
         public async Task DeleteAsync(int id)
@@ -53,7 +53,7 @@ namespace ModularMonolithStore.Modules.Products.Services
 
             if (ProductImage != null)
             {
-            _dbSet.Remove(ProductImage);
+               await _productImageRepository.DeleteAsync(ProductImage);
             }
         }
     }

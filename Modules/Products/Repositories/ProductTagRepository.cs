@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ModularMonolithStore.Common.Interfaces;
+using ModularMonolithStore.Common;
 using ModularMonolithStore.Modules.Products.Data;
 using ModularMonolithStore.Modules.Products.Models;
+using ModularMonolithStore.Modules.Products.Services.Interfaces;
 
 namespace ModularMonolithStore.Modules.Products.Repositories
 {
@@ -39,15 +40,19 @@ namespace ModularMonolithStore.Modules.Products.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(ProductTag productTag)
         {
-            var productTag = await GetByIdAsync(id);
-
             if (productTag != null)
             {
                 _dbSet.Remove(productTag);
                 await _context.SaveChangesAsync();
             }
+        }
+
+
+        public async Task<int> SaveAsync()
+        {
+            return await _context.SaveChangesAsync();
         }
     }
 }

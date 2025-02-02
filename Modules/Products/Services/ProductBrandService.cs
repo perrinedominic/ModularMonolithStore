@@ -1,44 +1,42 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ModularMonolithStore.Common.Interfaces;
+using ModularMonolithStore.Common;
 using ModularMonolithStore.Modules.Products.Data;
 using ModularMonolithStore.Modules.Products.Models;
 using ModularMonolithStore.Modules.Products.Repositories.Interfaces;
+using ModularMonolithStore.Modules.Products.Services.Interfaces;
 
 namespace ModularMonolithStore.Modules.Products.Services
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class ProductBrandService : IGenericService<ProductBrand>
     {
-        private readonly ProductDbContext _context;
-        private readonly DbSet<ProductBrand> _dbSet;
+        private readonly IGenericRepository<ProductBrand> _productBrandRepository;
 
-        public ProductBrandService(ProductDbContext context)
+
+        public ProductBrandService(IGenericRepository<ProductBrand> productBrandRepository)
         {
-            _context = context;
-            _dbSet = context.Set<ProductBrand>();
+            _productBrandRepository = productBrandRepository;
         }
 
         public async Task<ProductBrand?> GetByIdAsync(int id)
         {
-            return await _dbSet.FindAsync(id);
+            return await _productBrandRepository.GetByIdAsync(id);
         }
 
         public async Task<IEnumerable<ProductBrand>> GetAllAsync()
         {
-            return await _dbSet.ToListAsync();
+            return await _productBrandRepository.GetAllAsync();
         }
 
         public async Task AddAsync(ProductBrand productBrand)
         {
-            bool exists = await _dbSet.AnyAsync(p => p.Name == productBrand.Name);
+            var productBrands = await _productBrandRepository.GetAllAsync();
+            bool exists = productBrands.Any(p => p.Name == productBrand.Name);
 
             if (exists)
                 throw new InvalidOperationException("A brand with the same name already exists.");
 
-            await _dbSet.AddAsync(productBrand);
-            await _context.SaveChangesAsync();
+            await _productBrandRepository.AddAsync(productBrand);
+            await _productBrandRepository.SaveAsync();
         }
 
         public async Task UpdateAsync(ProductBrand productBrand)
@@ -51,8 +49,8 @@ namespace ModularMonolithStore.Modules.Products.Services
             var currentProductBrand = await GetByIdAsync(productBrand.Id)
                 ?? throw new ArgumentNullException(nameof(productBrand), "No matching Brand was found.");
 
-            _context.Entry(currentProductBrand).CurrentValues.SetValues(productBrand);
-            await _context.SaveChangesAsync();
+            await _productBrandRepository.UpdateAsync(currentProductBrand);
+            await _productBrandRepository.SaveAsync();
         }
 
         public async Task DeleteAsync(int id)
@@ -61,7 +59,7 @@ namespace ModularMonolithStore.Modules.Products.Services
 
             if (productBrand != null)
             {
-            _dbSet.Remove(productBrand);
+                await _productBrandRepository.DeleteAsync(productBrand);
             }
         }
     }

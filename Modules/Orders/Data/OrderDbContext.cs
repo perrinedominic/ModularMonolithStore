@@ -9,6 +9,8 @@ namespace ModularMonolithStore.Modules.Orders.Data
 
         public DbSet<Models.Order> Orders { get; set; }
         public DbSet<Models.OrderItem> OrderItems { get; set; }
+        public DbSet<Models.OrderPayment> OrderPayment { get; set; }
+        public DbSet<Models.OrderShippingAddress> OrderShippingAddress { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

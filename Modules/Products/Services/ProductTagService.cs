@@ -1,41 +1,42 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ModularMonolithStore.Common.Interfaces;
+using ModularMonolithStore.Common;
 using ModularMonolithStore.Modules.Products.Data;
 using ModularMonolithStore.Modules.Products.Models;
+using ModularMonolithStore.Modules.Products.Services.Interfaces;
 
 namespace ModularMonolithStore.Modules.Products.Services
 {
 
     public class ProductTagService : IGenericService<ProductTag>
     {
-        private readonly ProductDbContext _context;
-        private readonly DbSet<ProductTag> _dbSet;
+        private readonly IGenericRepository<ProductTag> _productTagRepository;
 
-        public ProductTagService(ProductDbContext context)
+
+        public ProductTagService(IGenericRepository<ProductTag> productTagRepository)
         {
-            _context = context;
-            _dbSet = context.Set<ProductTag>();
+            _productTagRepository = productTagRepository;
         }
 
         public async Task<ProductTag?> GetByIdAsync(int id)
         {
-            return await _dbSet.FindAsync(id);
+            return await _productTagRepository.GetByIdAsync(id);
         }
 
         public async Task<IEnumerable<ProductTag>> GetAllAsync()
         {
-            return await _dbSet.ToListAsync();
+            return await _productTagRepository.GetAllAsync();
         }
 
         public async Task AddAsync(ProductTag productTag)
         {
-            bool exists = await _dbSet.AnyAsync(p => p.Name == productTag.Name);
+            var productTags = await _productTagRepository.GetAllAsync();
+            bool exists = productTags.Any(p => p.Name == productTag.Name);
 
             if (exists)
                 throw new InvalidOperationException("A brand with the same name already exists.");
 
-            await _dbSet.AddAsync(productTag);
-            await _context.SaveChangesAsync();
+            await _productTagRepository.AddAsync(productTag);
+            await _productTagRepository.SaveAsync();
         }
 
         public async Task UpdateAsync(ProductTag productTag)
@@ -48,17 +49,17 @@ namespace ModularMonolithStore.Modules.Products.Services
             var currentProductBrand = await GetByIdAsync(productTag.Id)
                 ?? throw new ArgumentNullException(nameof(productTag), "No matching Brand was found.");
 
-            _context.Entry(currentProductBrand).CurrentValues.SetValues(productTag);
-            await _context.SaveChangesAsync();
+            await _productTagRepository.UpdateAsync(productTag);
+            await _productTagRepository.SaveAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
-            var productTag = await GetByIdAsync(id);
+            var productTag = await _productTagRepository.GetByIdAsync(id);
 
             if (productTag != null)
             {
-            _dbSet.Remove(productTag);
+               await _productTagRepository.DeleteAsync(productTag);
             }
         }
     }
