@@ -1,6 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using ModularMonolithStore.Common;
+using ModularMonolithStore.Modules.Orders.Data;
 using ModularMonolithStore.Modules.Products.Data;
 using ModularMonolithStore.Modules.Products.Models;
 using ModularMonolithStore.Modules.Products.Repositories;
@@ -35,6 +36,11 @@ namespace ModularMonolithStore
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
             builder.Services.AddDbContext<ProductDbContext>(options =>
+            {
+                options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
+
+            builder.Services.AddDbContext<OrderDbContext>(options =>
             {
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
             });

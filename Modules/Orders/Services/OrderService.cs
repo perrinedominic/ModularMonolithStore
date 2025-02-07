@@ -11,34 +11,27 @@ namespace ModularMonolithStore.Modules.Orders.Services
     /// </summary>
     public class OrderService : IGenericService<Order>, IOrderService
     {
-        private readonly OrderDbContext _context;
-        private readonly DbSet<Order> _dbSet;
+        private readonly IGenericRepository<Order> _orderRepository;
 
-        public OrderService(OrderDbContext context)
+        public OrderService(IGenericRepository<Order> orderRepository)
         {
-            _context = context;
-            _dbSet = context.Set<Order>();
+            _orderRepository = orderRepository;
         }
 
         public async Task<Order?> GetByIdAsync(int id)
         {
-            return await _dbSet.FindAsync(id);
+            return await _orderRepository.GetByIdAsync(id);
         }
 
         public async Task<IEnumerable<Order>> GetAllAsync()
         {
-            return await _dbSet.ToListAsync();
+            return await _orderRepository.GetAllAsync();
         }
 
         public async Task AddAsync(Order order)
         {
-            bool exists = await _dbSet.AnyAsync(o => o.Id == order.Id);
-
-            if (exists)
-                throw new InvalidOperationException("A brand with the same name already exists.");
-
-            await _dbSet.AddAsync(order);
-            await _context.SaveChangesAsync();
+            await _orderRepository.AddAsync(order);
+            await _orderRepository.SaveAsync();
         }
 
         public async Task UpdateAsync(Order order)
@@ -51,8 +44,8 @@ namespace ModularMonolithStore.Modules.Orders.Services
             var currentOrderBrand = await GetByIdAsync(order.Id)
                 ?? throw new ArgumentNullException(nameof(order), "No matching Brand was found.");
 
-            _context.Entry(currentOrderBrand).CurrentValues.SetValues(order);
-            await _context.SaveChangesAsync();
+            _orderRepository.UpdateAsync(order);
+            await _orderRepository.SaveAsync();
         }
 
         public async Task DeleteAsync(int id)
@@ -61,7 +54,7 @@ namespace ModularMonolithStore.Modules.Orders.Services
 
             if (orderService != null)
             {
-            _dbSet.Remove(orderService);
+                await _orderRepository.DeleteAsync(orderService);
             }
         }
 

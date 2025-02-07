@@ -24,7 +24,6 @@
     <Folder Include="Common\Infrastructure\EmailService\" />
     <Folder Include="Configs\" />
     <Folder Include="Modules\Orders\Migrations\" />
-    <Folder Include="Modules\Orders\DTOs\" />
     <Folder Include="Modules\Products\Migrations\" />
     <Folder Include="Modules\Customers\Data\" />
     <Folder Include="Modules\Customers\DTOs\" />

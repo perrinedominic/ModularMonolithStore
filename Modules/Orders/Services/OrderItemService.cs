@@ -10,34 +10,27 @@ namespace ModularMonolithStore.Modules.Orders.Services
     /// </summary>
     public class OrderItemService : IGenericService<OrderItem>
     {
-        private readonly OrderDbContext _context;
-        private readonly DbSet<OrderItem> _dbSet;
+        private readonly IGenericRepository<OrderItem> _orderItemRepository;
 
-        public OrderItemService(OrderDbContext context)
+        public OrderItemService(IGenericRepository<OrderItem> orderItemRepository)
         {
-            _context = context;
-            _dbSet = context.Set<OrderItem>();
+            _orderItemRepository = orderItemRepository;
         }
 
         public async Task<OrderItem?> GetByIdAsync(int id)
         {
-            return await _dbSet.FindAsync(id);
+            return await _orderItemRepository.GetByIdAsync(id);
         }
 
         public async Task<IEnumerable<OrderItem>> GetAllAsync()
         {
-            return await _dbSet.ToListAsync();
+            return await _orderItemRepository.GetAllAsync();
         }
 
         public async Task AddAsync(OrderItem orderItem)
         {
-            bool exists = await _dbSet.AnyAsync(o => o.Id == orderItem.Id);
-
-            if (exists)
-                throw new InvalidOperationException("A category with the same name already exists.");
-
-            await _dbSet.AddAsync(orderItem);
-            await _context.SaveChangesAsync();
+            await _orderItemRepository.AddAsync(orderItem);
+            await _orderItemRepository.SaveAsync();
         }
 
         public async Task UpdateAsync(OrderItem orderItem)
@@ -50,8 +43,8 @@ namespace ModularMonolithStore.Modules.Orders.Services
             var currentOrderItem = await GetByIdAsync(orderItem.Id)
                 ?? throw new ArgumentNullException(nameof(orderItem), "No matching Brand was found.");
 
-            _context.Entry(currentOrderItem).CurrentValues.SetValues(orderItem);
-            await _context.SaveChangesAsync();
+            _orderItemRepository.UpdateAsync(orderItem);
+            await _orderItemRepository.SaveAsync();
         }
 
         public async Task DeleteAsync(int id)
@@ -60,7 +53,7 @@ namespace ModularMonolithStore.Modules.Orders.Services
 
             if (orderItem != null)
             {
-            _dbSet.Remove(orderItem);
+               await _orderItemRepository.DeleteAsync(orderItem);
             }
         }
     }

@@ -8,29 +8,27 @@ namespace ModularMonolithStore.Modules.Orders.Services
 
     public class OrderShippingAddressService : IGenericService<OrderShippingAddress>
     {
-        private readonly OrderDbContext _context;
-        private readonly DbSet<OrderShippingAddress> _dbSet;
+        private readonly IGenericRepository<OrderShippingAddress> _orderShippingAddressRepository;
 
-        public OrderShippingAddressService(OrderDbContext context)
+        public OrderShippingAddressService(IGenericRepository<OrderShippingAddress> orderShippingAddressRepository)
         {
-            _context = context;
-            _dbSet = context.Set<OrderShippingAddress>();
+            _orderShippingAddressRepository = orderShippingAddressRepository;
         }
 
         public async Task<OrderShippingAddress?> GetByIdAsync(int id)
         {
-            return await _dbSet.FindAsync(id);
+            return await _orderShippingAddressRepository.GetByIdAsync(id);
         }
 
         public async Task<IEnumerable<OrderShippingAddress>> GetAllAsync()
         {
-            return await _dbSet.ToListAsync();
+            return await _orderShippingAddressRepository.GetAllAsync();
         }
 
         public async Task AddAsync(OrderShippingAddress orderShippingAddress)
         {
-            await _dbSet.AddAsync(orderShippingAddress);
-            await _context.SaveChangesAsync();
+            await _orderShippingAddressRepository.AddAsync(orderShippingAddress);
+            await _orderShippingAddressRepository.SaveAsync();
         }
 
         public async Task UpdateAsync(OrderShippingAddress orderShippingAddress)
@@ -38,8 +36,8 @@ namespace ModularMonolithStore.Modules.Orders.Services
             var currentOrderShippingAddress = await GetByIdAsync(orderShippingAddress.Id)
                 ?? throw new ArgumentNullException(nameof(orderShippingAddress), "No matching Shipping Address was found.");
 
-            _context.Entry(currentOrderShippingAddress).CurrentValues.SetValues(orderShippingAddress);
-            await _context.SaveChangesAsync();
+            await _orderShippingAddressRepository.UpdateAsync(currentOrderShippingAddress);
+            await _orderShippingAddressRepository.SaveAsync();
         }
 
         public async Task DeleteAsync(int id)
@@ -48,10 +46,10 @@ namespace ModularMonolithStore.Modules.Orders.Services
 
             if (orderShippingAddress != null)
             {
-            _dbSet.Remove(orderShippingAddress);
+                await _orderShippingAddressRepository.DeleteAsync(orderShippingAddress);
             }
 
-            await _context.SaveChangesAsync();
+            await _orderShippingAddressRepository.SaveAsync();
         }
     }
 }

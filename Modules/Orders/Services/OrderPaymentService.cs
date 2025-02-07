@@ -8,34 +8,27 @@ namespace ModularMonolithStore.Modules.Orders.Services
 
     public class OrderPaymentService : IGenericService<OrderPayment>
     {
-        private readonly OrderDbContext _context;
-        private readonly DbSet<OrderPayment> _dbSet;
+        private readonly IGenericRepository<OrderPayment> _orderPaymentRepository;
 
-        public OrderPaymentService(OrderDbContext context)
+        public OrderPaymentService(IGenericRepository<OrderPayment> orderPaymentRepository)
         {
-            _context = context;
-            _dbSet = context.Set<OrderPayment>();
+            _orderPaymentRepository = orderPaymentRepository;
         }
 
         public async Task<OrderPayment?> GetByIdAsync(int id)
         {
-            return await _dbSet.FindAsync(id);
+            return await _orderPaymentRepository.GetByIdAsync(id);
         }
 
         public async Task<IEnumerable<OrderPayment>> GetAllAsync()
         {
-            return await _dbSet.ToListAsync();
+            return await _orderPaymentRepository.GetAllAsync();
         }
 
         public async Task AddAsync(OrderPayment orderPayment)
         {
-            bool exists = await _dbSet.AnyAsync(o => o.TransactionNumber == orderPayment.TransactionNumber);
-
-            if (exists)
-                throw new InvalidOperationException("The discount code already exists.");
-
-            await _dbSet.AddAsync(orderPayment);
-            await _context.SaveChangesAsync();
+            await _orderPaymentRepository.AddAsync(orderPayment);
+            await _orderPaymentRepository.SaveAsync();
         }
 
         public async Task UpdateAsync(OrderPayment orderPayment)
@@ -48,8 +41,8 @@ namespace ModularMonolithStore.Modules.Orders.Services
             var currentOrderPayment = await GetByIdAsync(orderPayment.Id)
                 ?? throw new ArgumentNullException(nameof(orderPayment), "No matching Discount was found.");
 
-            _context.Entry(currentOrderPayment).CurrentValues.SetValues(orderPayment);
-            await _context.SaveChangesAsync();
+            await _orderPaymentRepository.UpdateAsync(orderPayment);
+            await _orderPaymentRepository.SaveAsync();
         }
 
         public async Task DeleteAsync(int id)
@@ -58,7 +51,7 @@ namespace ModularMonolithStore.Modules.Orders.Services
 
             if (orderPayment != null)
             {
-            _dbSet.Remove(orderPayment);
+                await _orderPaymentRepository.DeleteAsync(orderPayment);
             }
         }
     }
