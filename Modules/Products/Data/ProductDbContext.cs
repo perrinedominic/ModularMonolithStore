@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ModularMonolithStore.Modules.Products.Models;
-using ModularMonolithStore.Modules.Products.Repositories;
+using Web.Core.Modules.Products.Models;
+using Web.Core.Modules.Products.Repositories;
 
-namespace ModularMonolithStore.Modules.Products.Data
+namespace Web.Core.Modules.Products.Data
 {
     public class ProductDbContext : DbContext
     {

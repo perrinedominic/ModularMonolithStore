@@ -1,6 +1,6 @@
-﻿using ModularMonolithStore.Modules.Orders.Models;
+﻿using Web.Core.Modules.Orders.Models;
 
-namespace ModularMonolithStore.Modules.Customers.Models
+namespace Web.Core.Modules.Customers.Models
 {
     public class Customer
     {

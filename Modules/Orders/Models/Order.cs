@@ -1,8 +1,8 @@
-﻿using ModularMonolithStore.Modules.Customers.Models;
-using ModularMonolithStore.Modules.Users.Models;
+﻿using Web.Core.Modules.Customers.Models;
+using Web.Core.Modules.Users.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace ModularMonolithStore.Modules.Orders.Models
+namespace Web.Core.Modules.Orders.Models
 {
     public class Order
     {

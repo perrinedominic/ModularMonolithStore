@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace ModularMonolithStore.Controllers
+namespace Web.Core.Controllers
 {
     [ApiController]
     [Route("[controller]")]

@@ -1,4 +1,4 @@
-﻿namespace ModularMonolithStore.Modules.Orders.DTOs
+﻿namespace Web.Core.Modules.Orders.DTOs
 {
     public class OrderDto
     {

@@ -1,7 +1,7 @@
-﻿using ModularMonolithStore.Modules.Customers.Models;
-using ModularMonolithStore.Modules.Orders.Models;
+﻿using Web.Core.Modules.Customers.Models;
+using Web.Core.Modules.Orders.Models;
 
-namespace ModularMonolithStore.Modules.Users.Models
+namespace Web.Core.Modules.Users.Models
 {
     public class User
     {

@@ -1,7 +1,7 @@
-﻿using ModularMonolithStore.Modules.Products.Models;
+﻿using Web.Core.Modules.Products.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace ModularMonolithStore.Modules.Products.DTOs
+namespace Web.Core.Modules.Products.DTOs
 {
     public class ProductDto
     {

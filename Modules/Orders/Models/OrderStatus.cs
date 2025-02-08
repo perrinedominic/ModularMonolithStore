@@ -1,4 +1,4 @@
-﻿namespace ModularMonolithStore.Modules.Orders.Models
+﻿namespace Web.Core.Modules.Orders.Models
 {
     public enum OrderStatus
     {

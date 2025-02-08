@@ -1,15 +1,15 @@
 
 using Microsoft.EntityFrameworkCore;
-using ModularMonolithStore.Common;
-using ModularMonolithStore.Modules.Orders.Data;
-using ModularMonolithStore.Modules.Products.Data;
-using ModularMonolithStore.Modules.Products.Models;
-using ModularMonolithStore.Modules.Products.Repositories;
-using ModularMonolithStore.Modules.Products.Repositories.Interfaces;
-using ModularMonolithStore.Modules.Products.Services;
-using ModularMonolithStore.Modules.Products.Services.Interfaces;
+using Web.Core.Common;
+using Web.Core.Modules.Orders.Data;
+using Web.Core.Modules.Products.Data;
+using Web.Core.Modules.Products.Models;
+using Web.Core.Modules.Products.Repositories;
+using Web.Core.Modules.Products.Repositories.Interfaces;
+using Web.Core.Modules.Products.Services;
+using Web.Core.Modules.Products.Services.Interfaces;
 
-namespace ModularMonolithStore
+namespace Web.Core
 {
     public class Program
     {

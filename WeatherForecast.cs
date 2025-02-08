@@ -1,4 +1,4 @@
-namespace ModularMonolithStore
+namespace Web.Core
 {
     public class WeatherForecast
     {

@@ -1,6 +1,6 @@
-﻿using ModularMonolithStore.Modules.Orders.Models;
+﻿using Web.Core.Modules.Orders.Models;
 
-namespace ModularMonolithStore.Modules.Orders.Repositories.Interfaces
+namespace Web.Core.Modules.Orders.Repositories.Interfaces
 {
     /// <summary>
     /// Repository interface with methods specific to the Order Model

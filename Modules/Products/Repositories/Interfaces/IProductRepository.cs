@@ -1,6 +1,6 @@
-﻿using ModularMonolithStore.Modules.Products.Models;
+﻿using Web.Core.Modules.Products.Models;
 
-namespace ModularMonolithStore.Modules.Products.Repositories.Interfaces
+namespace Web.Core.Modules.Products.Repositories.Interfaces
 {
     /// <summary>
     /// Repository interface with methods specific to the Product Model

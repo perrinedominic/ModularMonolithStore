@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ModularMonolithStore.Modules.Products.Models
+namespace Web.Core.Modules.Products.Models
 {
     public class Product
     {

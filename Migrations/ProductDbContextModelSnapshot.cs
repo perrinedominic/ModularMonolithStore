@@ -3,12 +3,12 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ModularMonolithStore.Modules.Products.Data;
+using Web.Core.Modules.Products.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace ModularMonolithStore.Migrations
+namespace Web.Core.Migrations
 {
     [DbContext(typeof(ProductDbContext))]
     partial class ProductDbContextModelSnapshot : ModelSnapshot
@@ -22,7 +22,7 @@ namespace ModularMonolithStore.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("ModularMonolithStore.Modules.Products.Models.Product", b =>
+            modelBuilder.Entity("App.Core.Modules.Products.Models.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -79,7 +79,7 @@ namespace ModularMonolithStore.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("ModularMonolithStore.Modules.Products.Models.ProductBrand", b =>
+            modelBuilder.Entity("App.Core.Modules.Products.Models.ProductBrand", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -108,7 +108,7 @@ namespace ModularMonolithStore.Migrations
                     b.ToTable("ProductBrands");
                 });
 
-            modelBuilder.Entity("ModularMonolithStore.Modules.Products.Models.ProductCategory", b =>
+            modelBuilder.Entity("App.Core.Modules.Products.Models.ProductCategory", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -129,7 +129,7 @@ namespace ModularMonolithStore.Migrations
                     b.ToTable("ProductCategories");
                 });
 
-            modelBuilder.Entity("ModularMonolithStore.Modules.Products.Models.ProductDiscount", b =>
+            modelBuilder.Entity("App.Core.Modules.Products.Models.ProductDiscount", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -158,7 +158,7 @@ namespace ModularMonolithStore.Migrations
                     b.ToTable("ProductDiscount");
                 });
 
-            modelBuilder.Entity("ModularMonolithStore.Modules.Products.Models.ProductImage", b =>
+            modelBuilder.Entity("App.Core.Modules.Products.Models.ProductImage", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -184,7 +184,7 @@ namespace ModularMonolithStore.Migrations
                     b.ToTable("ProductImages");
                 });
 
-            modelBuilder.Entity("ModularMonolithStore.Modules.Products.Models.ProductRating", b =>
+            modelBuilder.Entity("App.Core.Modules.Products.Models.ProductRating", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -212,7 +212,7 @@ namespace ModularMonolithStore.Migrations
                     b.ToTable("ProductRatings");
                 });
 
-            modelBuilder.Entity("ModularMonolithStore.Modules.Products.Models.ProductReview", b =>
+            modelBuilder.Entity("App.Core.Modules.Products.Models.ProductReview", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -240,7 +240,7 @@ namespace ModularMonolithStore.Migrations
                     b.ToTable("ProductReviews");
                 });
 
-            modelBuilder.Entity("ModularMonolithStore.Modules.Products.Models.ProductTag", b =>
+            modelBuilder.Entity("App.Core.Modules.Products.Models.ProductTag", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -257,25 +257,25 @@ namespace ModularMonolithStore.Migrations
                     b.ToTable("ProductTags");
                 });
 
-            modelBuilder.Entity("ModularMonolithStore.Modules.Products.Models.Product", b =>
+            modelBuilder.Entity("App.Core.Modules.Products.Models.Product", b =>
                 {
-                    b.HasOne("ModularMonolithStore.Modules.Products.Models.ProductBrand", "Brand")
+                    b.HasOne("App.Core.Modules.Products.Models.ProductBrand", "Brand")
                         .WithMany("Products")
                         .HasForeignKey("BrandId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ModularMonolithStore.Modules.Products.Models.ProductCategory", "Category")
+                    b.HasOne("App.Core.Modules.Products.Models.ProductCategory", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ModularMonolithStore.Modules.Products.Models.ProductDiscount", "Discount")
+                    b.HasOne("App.Core.Modules.Products.Models.ProductDiscount", "Discount")
                         .WithMany("Products")
                         .HasForeignKey("DiscountId");
 
-                    b.HasOne("ModularMonolithStore.Modules.Products.Models.ProductTag", "Tag")
+                    b.HasOne("App.Core.Modules.Products.Models.ProductTag", "Tag")
                         .WithMany("Products")
                         .HasForeignKey("TagId");
 
@@ -288,18 +288,18 @@ namespace ModularMonolithStore.Migrations
                     b.Navigation("Tag");
                 });
 
-            modelBuilder.Entity("ModularMonolithStore.Modules.Products.Models.ProductImage", b =>
+            modelBuilder.Entity("App.Core.Modules.Products.Models.ProductImage", b =>
                 {
-                    b.HasOne("ModularMonolithStore.Modules.Products.Models.Product", null)
+                    b.HasOne("App.Core.Modules.Products.Models.Product", null)
                         .WithOne("Image")
-                        .HasForeignKey("ModularMonolithStore.Modules.Products.Models.ProductImage", "ProductId")
+                        .HasForeignKey("App.Core.Modules.Products.Models.ProductImage", "ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ModularMonolithStore.Modules.Products.Models.ProductRating", b =>
+            modelBuilder.Entity("App.Core.Modules.Products.Models.ProductRating", b =>
                 {
-                    b.HasOne("ModularMonolithStore.Modules.Products.Models.Product", "Product")
+                    b.HasOne("App.Core.Modules.Products.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -308,9 +308,9 @@ namespace ModularMonolithStore.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("ModularMonolithStore.Modules.Products.Models.ProductReview", b =>
+            modelBuilder.Entity("App.Core.Modules.Products.Models.ProductReview", b =>
                 {
-                    b.HasOne("ModularMonolithStore.Modules.Products.Models.Product", "Product")
+                    b.HasOne("App.Core.Modules.Products.Models.Product", "Product")
                         .WithMany("Reviews")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -319,7 +319,7 @@ namespace ModularMonolithStore.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("ModularMonolithStore.Modules.Products.Models.Product", b =>
+            modelBuilder.Entity("App.Core.Modules.Products.Models.Product", b =>
                 {
                     b.Navigation("Image")
                         .IsRequired();
@@ -327,22 +327,22 @@ namespace ModularMonolithStore.Migrations
                     b.Navigation("Reviews");
                 });
 
-            modelBuilder.Entity("ModularMonolithStore.Modules.Products.Models.ProductBrand", b =>
+            modelBuilder.Entity("App.Core.Modules.Products.Models.ProductBrand", b =>
                 {
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("ModularMonolithStore.Modules.Products.Models.ProductCategory", b =>
+            modelBuilder.Entity("App.Core.Modules.Products.Models.ProductCategory", b =>
                 {
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("ModularMonolithStore.Modules.Products.Models.ProductDiscount", b =>
+            modelBuilder.Entity("App.Core.Modules.Products.Models.ProductDiscount", b =>
                 {
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("ModularMonolithStore.Modules.Products.Models.ProductTag", b =>
+            modelBuilder.Entity("App.Core.Modules.Products.Models.ProductTag", b =>
                 {
                     b.Navigation("Products");
                 });

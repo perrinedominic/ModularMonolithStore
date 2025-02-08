@@ -1,6 +1,6 @@
-﻿using ModularMonolithStore.Modules.Products.Models;
+﻿using Web.Core.Modules.Products.Models;
 
-namespace ModularMonolithStore.Modules.Products.Services.Interfaces
+namespace Web.Core.Modules.Products.Services.Interfaces
 {
     public interface IProductService
     {

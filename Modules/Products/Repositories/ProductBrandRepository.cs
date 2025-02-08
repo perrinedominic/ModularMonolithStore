@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ModularMonolithStore.Common;
-using ModularMonolithStore.Modules.Products.Data;
-using ModularMonolithStore.Modules.Products.Models;
+using Web.Core.Common;
+using Web.Core.Modules.Products.Data;
+using Web.Core.Modules.Products.Models;
 
-namespace ModularMonolithStore.Modules.Products.Repositories
+namespace Web.Core.Modules.Products.Repositories
 {
     public class ProductBrandRepository : IGenericRepository<ProductBrand>
     {

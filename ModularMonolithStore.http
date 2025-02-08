@@ -1,6 +1,6 @@
-@ModularMonolithStore_HostAddress = http://localhost:5130
+@App.Core_HostAddress = http://localhost:5130
 
-GET {{ModularMonolithStore_HostAddress}}/weatherforecast/
+GET {{App.Core_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###

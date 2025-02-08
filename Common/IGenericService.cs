@@ -1,6 +1,6 @@
-﻿using ModularMonolithStore.Modules.Products.Models;
+﻿using Web.Core.Modules.Products.Models;
 
-namespace ModularMonolithStore.Common
+namespace Web.Core.Common
 {
     public interface IGenericService<T> where T : class
     {

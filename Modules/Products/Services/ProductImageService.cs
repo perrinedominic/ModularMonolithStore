@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ModularMonolithStore.Common;
-using ModularMonolithStore.Modules.Products.Data;
-using ModularMonolithStore.Modules.Products.Models;
-using ModularMonolithStore.Modules.Products.Services.Interfaces;
+using Web.Core.Common;
+using Web.Core.Modules.Products.Data;
+using Web.Core.Modules.Products.Models;
+using Web.Core.Modules.Products.Services.Interfaces;
 
-namespace ModularMonolithStore.Modules.Products.Services
+namespace Web.Core.Modules.Products.Services
 {
 
     public class ProductImageService : IGenericService<ProductImage>

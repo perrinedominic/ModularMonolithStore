@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace ModularMonolithStore.Modules.Orders.Data
+namespace Web.Core.Modules.Orders.Data
 {
     public class OrderDbContext : DbContext
     {

@@ -1,8 +1,8 @@
-﻿using ModularMonolithStore.Modules.Products.Models;
+﻿using Web.Core.Modules.Products.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ModularMonolithStore.Modules.Orders.Models
+namespace Web.Core.Modules.Orders.Models
 {
     public class OrderItem
     {

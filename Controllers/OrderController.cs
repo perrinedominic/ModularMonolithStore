@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ModularMonolithStore.Modules.Orders.DTOs;
-using ModularMonolithStore.Modules.Orders.Models;
-using ModularMonolithStore.Modules.Orders.Services;
+using Web.Core.Modules.Orders.DTOs;
+using Web.Core.Modules.Orders.Models;
+using Web.Core.Modules.Orders.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace ModularMonolithStore.Controllers
+namespace Web.Core.Controllers
 {
     [Route("api/orders")]
     [ApiController]

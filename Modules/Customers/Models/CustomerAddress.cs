@@ -1,4 +1,4 @@
-﻿namespace ModularMonolithStore.Modules.Customers.Models
+﻿namespace Web.Core.Modules.Customers.Models
 {
     public class CustomerAddress
     {

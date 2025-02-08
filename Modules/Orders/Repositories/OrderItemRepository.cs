@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ModularMonolithStore.Common;
-using ModularMonolithStore.Modules.Orders.Data;
-using ModularMonolithStore.Modules.Orders.Models;
+using Web.Core.Common;
+using Web.Core.Modules.Orders.Data;
+using Web.Core.Modules.Orders.Models;
 
-namespace ModularMonolithStore.Modules.Orders.Repositories
+namespace Web.Core.Modules.Orders.Repositories
 {
     public class OrderItemRepository : IGenericRepository<OrderItem>
     {

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ModularMonolithStore.Modules.Orders.Models
+namespace Web.Core.Modules.Orders.Models
 {
     public class OrderPayment
     {

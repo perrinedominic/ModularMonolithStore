@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace ModularMonolithStore.Common
+namespace Web.Core.Common
 {
     public interface IGenericRepository<T> where T : class
     {

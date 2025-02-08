@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35707.178 d17.12
+VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModularMonolithStore", "ModularMonolithStore.csproj", "{03DBB6FD-A5B9-4CB1-9797-04EEF2FC5301}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core.csproj", "{03DBB6FD-A5B9-4CB1-9797-04EEF2FC5301}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI", "..\UI\UI.csproj", "{69C58799-40D4-4DD7-8564-695CA25AA3AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{03DBB6FD-A5B9-4CB1-9797-04EEF2FC5301}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03DBB6FD-A5B9-4CB1-9797-04EEF2FC5301}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{03DBB6FD-A5B9-4CB1-9797-04EEF2FC5301}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69C58799-40D4-4DD7-8564-695CA25AA3AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69C58799-40D4-4DD7-8564-695CA25AA3AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69C58799-40D4-4DD7-8564-695CA25AA3AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69C58799-40D4-4DD7-8564-695CA25AA3AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

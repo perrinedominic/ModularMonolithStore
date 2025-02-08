@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ModularMonolithStore.Modules.Products.DTOs;
-using ModularMonolithStore.Modules.Products.Models;
-using ModularMonolithStore.Modules.Products.Services;
-using ModularMonolithStore.Modules.Products.Services.Interfaces;
+using Web.Core.Modules.Products.DTOs;
+using Web.Core.Modules.Products.Models;
+using Web.Core.Modules.Products.Services;
+using Web.Core.Modules.Products.Services.Interfaces;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace ModularMonolithStore.Controllers
+namespace Web.Core.Controllers
 {
     [Route("api/products")]
     [ApiController]
